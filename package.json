@@ -1,0 +1,14 @@
+{
+  "name": "colorshadesgenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "colorShadesGenerator.js",
+  "scripts": {
+    "start": "npx http-server -c-1 ./"
+  },
+  "author": "Thibault Willer",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
