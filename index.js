@@ -1,5 +1,5 @@
 function generateShades(color) {
-  const colors = extractColor(color);
+  const colors = validateAndExtractColor(color);
 
   if (!colors) {
     console.error('Bad color input');
@@ -24,7 +24,7 @@ function generateShades(color) {
   };
 }
 
-function extractColor(color) {
+function validateAndExtractColor(color) {
   const pattern1 = new RegExp(/^#[0-9a-fA-F]{6}$/);
 
   if (color.match(pattern1)) {
@@ -38,7 +38,7 @@ function extractColor(color) {
 }
 
 function calculateDarkerShades(rgb) {
-  return Array.from(Array(10), (_e, i) => rgb.map(colorUnit => Math.round(colorUnit * i / 10)));
+  return Array.from(Array(10), (_e, i) => rgb.map(colorUnit => Math.round(colorUnit * (10 - i) / 10)));
 }
 
 function calculateBrighterShades(rgb) {
@@ -46,40 +46,49 @@ function calculateBrighterShades(rgb) {
   return Array.from(Array(10), (_e, i) => rgb.map((colorUnit, index) => Math.round(colorUnit + unitsRGB[index] * (i + 1))));
 }
 
-function shadeElementDom(color) {
-  const shadeDom = document.createElement('div');
-  shadeDom.style.width = '50px';
-  shadeDom.style.height = '50px';
-  shadeDom.style.background = color;
-  return shadeDom;
-}
-
-function shadesDom(color) {
-  const { colorDarkerShades, colorBrighterShades } = generateShades(color);
-
+function DomShadesOperations() {
   const shadesDom = document.getElementById('darkerShades');
   const brigtherDom = document.getElementById('brighterShades');
-  while (shadesDom.firstChild) {
-    shadesDom.removeChild(shadesDom.lastChild);
-  }
-  while (brigtherDom.firstChild) {
-    brigtherDom.removeChild(brigtherDom.lastChild);
+
+  function removeAllChildrenElement(element) {
+    while (element.firstChild) {
+      element.removeChild(element.lastChild);
+    }
   }
 
-  for (let i = 0; i < colorDarkerShades.length; i++) {
-    const shadeDom = shadeElementDom(colorDarkerShades[i]);
-    shadesDom.appendChild(shadeDom);
+  function colorElement(color) {
+    const shadeDom = document.createElement('div');
+    shadeDom.style.width = '150px';
+    shadeDom.style.height = '60px';
+    shadeDom.style.borderRadius = '10px';
+    shadeDom.style.background = color;
+    return shadeDom;
   }
 
-  for (let i = 0; i < colorBrighterShades.length; i++) {
-    const shadeDom = shadeElementDom(colorBrighterShades[i]);
-    brigtherDom.appendChild(shadeDom);
+  function fillColors(element, colors) {
+    for (let i = 0; i < colors.length; i++) {
+      const shadeDom = colorElement(colors[i]);
+      element.appendChild(shadeDom);
+    }
   }
-};
+
+  function buildColors(color) {
+    const { colorDarkerShades, colorBrighterShades } = generateShades(color);
+
+    removeAllChildrenElement(shadesDom);
+    removeAllChildrenElement(brigtherDom);
+
+    fillColors(shadesDom, colorDarkerShades);
+    fillColors(brigtherDom, colorBrighterShades);
+  }
+
+  return buildColors;
+}
 
 (function() {
   const colorInput = document.getElementById('colorInput');
+  const domShadesOperations = DomShadesOperations();
   colorInput.addEventListener('change', (e) => {
-    shadesDom(e.target.value);
+    domShadesOperations(e.target.value);
   });
 })()
