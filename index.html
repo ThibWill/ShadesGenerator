@@ -6,14 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Color Shades</title>
   <script defer src="./index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+  </style> 
   <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-  <input id="colorInput" type="color">
+  <header id="header" class="header">
+    <span class="header-text">Shades Generator</span>
+    <div class="header-color-picker">
+      <span class="header-text">Pick your color :</span>
+      <input id="colorInput" type="color">
+    </div>
+  </header>
+  
   <div class="wrapper-shades">
-    <div class="shades">
+    <div class="shades panel-left">
       <h2 class="shades-title">Darker Shades</h2>
-      <div id="darkerShades" class="shades-palette"></div>
+      <div id="darkerShades" class="shades-palette darker-palette"></div>
     </div>
     <div class="shades">
       <h2 class="shades-title">Brighter Shades</h2>

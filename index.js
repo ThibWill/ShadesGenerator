@@ -1,3 +1,5 @@
+const NUMBER_SHADES = 12;
+
 function generateShades(color) {
   const colors = validateAndExtractColor(color);
 
@@ -38,12 +40,12 @@ function validateAndExtractColor(color) {
 }
 
 function calculateDarkerShades(rgb) {
-  return Array.from(Array(10), (_e, i) => rgb.map(colorUnit => Math.round(colorUnit * (10 - i) / 10)));
+  return Array.from(Array(NUMBER_SHADES), (_e, i) => rgb.map(colorUnit => Math.round(colorUnit * (NUMBER_SHADES - i) / NUMBER_SHADES)));
 }
 
 function calculateBrighterShades(rgb) {
-  const unitsRGB = rgb.map(colorUnit => Math.floor((255 - colorUnit) / 10));
-  return Array.from(Array(10), (_e, i) => rgb.map((colorUnit, index) => Math.round(colorUnit + unitsRGB[index] * (i + 1))));
+  const unitsRGB = rgb.map(colorUnit => Math.floor((255 - colorUnit) / NUMBER_SHADES));
+  return Array.from(Array(NUMBER_SHADES), (_e, i) => rgb.map((colorUnit, index) => Math.round(colorUnit + unitsRGB[index] * (i + 1))));
 }
 
 function DomShadesOperations() {
@@ -58,10 +60,8 @@ function DomShadesOperations() {
 
   function colorElement(color) {
     const shadeDom = document.createElement('div');
-    shadeDom.style.width = '150px';
-    shadeDom.style.height = '60px';
-    shadeDom.style.borderRadius = '10px';
     shadeDom.style.background = color;
+    shadeDom.textContent = color;
     return shadeDom;
   }
 
